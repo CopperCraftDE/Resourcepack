@@ -1,0 +1,31 @@
+name: Release Resourcepack ZIP
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create ZIP archive
+        run: |
+          mkdir -p build
+          zip -r build/CopperCraft-Protectet.zip . -x "*.git*" ".github/*"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "Latest Resourcepack"
+          body: "Automatisch erstelltes Resourcepack ZIP."
+          files: build/CopperCraft-Protectet.zip
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
