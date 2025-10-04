@@ -1,4 +1,4 @@
-name: Release Resourcepack ZIP
+name: Upload existing ZIP to Release
 
 on:
   push:
@@ -14,18 +14,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create ZIP archive
-        run: |
-          mkdir -p build
-          zip -r build/CopperCraft-Protectet.zip . -x "*.git*" ".github/*"
-
-      - name: Create GitHub Release
+      - name: Upload existing ZIP to Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: "Latest Resourcepack"
-          body: "Automatisch erstelltes Resourcepack ZIP."
-          files: build/CopperCraft-Protectet.zip
+          body: "Automatisch aktualisierte ZIP-Datei aus dem Repository."
+          files: CopperCraft-Protectet.zip
           make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
